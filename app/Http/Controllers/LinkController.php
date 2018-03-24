@@ -14,8 +14,20 @@ class LinkController extends Controller
     {
         $links = Link::all();
 
+        $collectedLinks = [];
+
+        foreach ($links as $link) {
+            $new = [
+                'base_url' => $link->base_url,
+                'new_url' => url() . '/r/' . $link->new_url,
+                'created_at' => $link->created_at
+            ];
+
+            array_push($collectedLinks, $new);
+        }
+
         return response()->json([
-            'links' => $links
+            'links' => $collectedLinks
         ], 200);
     }
 
