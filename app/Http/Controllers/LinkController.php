@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LinkController extends Controller
 {
@@ -34,9 +35,14 @@ class LinkController extends Controller
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function createNewLink(Request $request)
     {
+        $this->validate($request, [
+            'base_url' => 'required|url|unique:links'
+        ]);
+
         $oldLink = Link::where('base_url', $request->get('base_url'))->first();
         if (! $oldLink) {
             $link = Link::create([
