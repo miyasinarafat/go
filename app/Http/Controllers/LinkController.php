@@ -46,7 +46,8 @@ class LinkController extends Controller
 
             return response()->json([
                 'base_url' => $link->base_url,
-                'new_url' => url() . '/r/' . $link->new_url
+                'new_url' => url() . '/r/' . $link->new_url,
+                'created_at' => $link->created_at
 
             ], 201);
         } else {
