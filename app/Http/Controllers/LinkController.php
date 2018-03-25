@@ -37,7 +37,7 @@ class LinkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function createLink(Request $request)
+    public function createNewLink(Request $request)
     {
         $this->validate($request, [
             'base_url' => 'required|url|unique:links|min:5'
