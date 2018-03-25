@@ -37,29 +37,22 @@ class LinkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function createNewLink(Request $request)
+    public function createLink(Request $request)
     {
         $this->validate($request, [
-            'base_url' => 'required|url|unique:links'
+            'base_url' => 'required|url|unique:links|min:5'
         ]);
 
-        $oldLink = Link::where('base_url', $request->get('base_url'))->first();
-        if (! $oldLink) {
-            $link = Link::create([
-                'base_url' => $request->get('base_url'),
-                'new_url' => str_random('5')
-            ]);
+        $link = Link::create([
+            'base_url' => $request->get('base_url'),
+            'new_url' => str_random(7)
+        ]);
 
-            return response()->json([
+        return response()->json([
+            'link' => [
                 'base_url' => $link->base_url,
-                'new_url' => url() . '/r/' . $link->new_url,
-                'created_at' => $link->created_at
-
-            ], 201);
-        } else {
-            return response()->json([
-                'error' => 'This base url already exist.'
-            ], 409);
-        }
+                'new_url' => url() . '/r/' .  $link->new_url
+            ]
+        ], 201);
     }
 }
